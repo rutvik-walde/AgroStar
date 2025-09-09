@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AgroStar Saathi Registration Enhanced</title>
+<style>
+  /* Basic reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #000; /* black outside phone */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .phone {
+    width: 360px;
+    height: 720px;
+    background: #fff; /* white inside phone */
+    border: 2px solid #000; /* black border */
+    border-radius: 32px;
+    box-shadow: none; /* no shadow */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    margin: 20px auto;
+  }
+  .top-ribbon {
+    background-color: #b22222;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-radius: 32px 32px 0 0;
+  }
+  .top-ribbon .title {
+    text-indent: 8px;
+  }
+  .top-ribbon .logout {
+    cursor: pointer;
+  }
+  .screen {
+    flex: 1;
+    overflow-y: auto;
+    background: #fff; /* white inside screen */
+    padding: 18px 18px 18px 18px;
+  }
+  h2 {
+    color: #b22222;
+    margin: 16px 0 9px 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+  }
+  label {
+    color: black; /* question label color black */
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 15.5px;
+    display: block;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  button {
+    font-family: inherit;
+    font-size: 15px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select {
+    padding: 8px 12px;
+    border-radius: 7px;
+    border: 2px solid #b22222;
+    color: #333;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  select:focus {
+    border-color: #ff4c4c;
+    background: #fff4f4;
+  }
+  .multi-select-dropdown {
+    position: relative;
+    user-select: none;
+  }
+  .multi-select-button {
+    width: 100%;
+    padding: 9px 12px;
+    border: 2px solid #b22222;
+    border-radius: 7px;
+    text-align: left;
+    color: #333;
+    background: #fff;
+    cursor: pointer;
+  }
+  .multi-select-button:focus {
+    outline: none;
+    border-color: #ff4c4c;
+    background: #fff4f4;
+  }
+  .multi-select-menu {
+    position: absolute;
+    z-index: 20;
+    background: #fff;
+    border: 2px solid #b22222;
+    border-radius: 7px;
+    width: 100%;
+    max-height: 160px;
+    overflow-y: auto;
+    margin-top: 6px;
+    box-shadow: 0 2px 10px rgba(178,34,34,0.2);
+    display: none;
+    padding: 8px 8px 4px 12px;
+  }
+  .multi-select-menu.show {
+    display: block;
+  }
+  .multi-select-menu label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+  .multi-select-menu input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #b22222;
+    margin: 0;
+    cursor: pointer;
+  }
+  .confirm-btn {
+    width: 100%;
+    background: #b22222;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 8px 0;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .confirm-btn:hover,
+  .confirm-btn:focus {
+    background: #ff4c4c;
+    outline: none;
+  }
+  small.validation-message {
+    display: block;
+    margin-top: 4px;
+    color: #ff4c4c;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .footer-bar {
+    background: #b22222; /* red footer background */
+    color: white; /* white text */
+    font-weight: 700;
+    font-size: 20px;
+    user-select: none;
+    display: flex;
+    justify-content: center; /* center text horizontally */
+    align-items: center;
+    padding: 20px;
+    border-radius: 0 0 32px 32px;
+    cursor: pointer;
+  }
+  .footer-bar:focus {
+    outline: 2px solid #ff4c4c;
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="phone" role="main" aria-label="AgroStar Saathi enhanced registration form">
+    <div class="top-ribbon">
+      <div class="title">Agrostar Saathi</div>
+      <div class="logout" tabindex="0" role="button" aria-label="Logout">Logout</div>
+    </div>
+    <div class="screen">
+      <h2>Registration Form</h2>
+      <form id="registrationForm" novalidate>
+        <div>
+          <label for="name">Your Name*</label>
+          <input id="name" name="name" type="text" placeholder="Please enter your name" required />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="email">Email ID*</label>
+          <input id="email" name="email" type="email" placeholder="Please enter your email address" required />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="shopName">Shop Name*</label>
+          <input id="shopName" name="shopName" type="text" placeholder="Enter registered shop name" required />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="shopAddress">Shop Address*</label>
+          <input id="shopAddress" name="shopAddress" type="text" placeholder="Enter accurate shop address" required />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="businessType">Business Type*</label>
+          <select id="businessType" name="businessType" required aria-required="true" aria-describedby="businessTypeTip">
+            <option value="" disabled selected>Select type</option>
+            <option value="proprietor">Proprietor</option>
+            <option value="firm">Firm</option>
+            <option value="other">Other</option>
+          </select>
+          <small id="businessTypeTip" class="validation-message" aria-live="polite"></small>
+        </div>
+
+        <!-- Custom Multi-select Dropdown for Business Categories -->
+        <div class="multi-select-dropdown" id="businessCategoriesWrapper">
+          <label for="businessCategoriesBtn" style="color:black;">Business Categories</label>
+          <button type="button" id="businessCategoriesBtn" class="multi-select-button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="businessCategoriesLabel businessCategoriesBtn" aria-controls="businessCategoriesMenu">
+            Select business categories
+          </button>
+          <div class="multi-select-menu" id="businessCategoriesMenu" role="listbox" tabindex="-1" aria-multiselectable="true" aria-labelledby="businessCategoriesLabel">
+            <label><input type="checkbox" value="fertilizer" /> Fertilizer</label>
+            <label><input type="checkbox" value="seed" /> Seed</label>
+            <label><input type="checkbox" value="equipment" /> Equipment</label>
+            <label><input type="checkbox" value="other" /> Other</label>
+            <button type="button" class="confirm-btn" id="confirmCategoriesBtn">Confirm</button>
+          </div>
+          <small id="categoriesTip" class="validation-message" aria-live="polite"></small>
+        </div>
+
+        <div>
+          <label for="state" style="color:black;">State</label>
+          <select id="state" name="state" aria-describedby="stateTip">
+            <option value="" disabled selected>Select state</option>
+            <option value="maharashtra">Maharashtra</option>
+            <option value="karnataka">Karnataka</option>
+            <option value="tamilnadu">Tamil Nadu</option>
+            <option value="gujarat">Gujarat</option>
+          </select>
+          <small id="stateTip" class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="district" style="color:black;">District</label>
+          <select id="district" name="district" disabled aria-describedby="districtTip">
+            <option value="" disabled selected>Select district</option>
+          </select>
+          <small id="districtTip" class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="taluka" style="color:black;">Taluka</label>
+          <input id="taluka" name="taluka" type="text" placeholder="Enter taluka/tehsil" />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="village" style="color:black;">Village</label>
+          <input id="village" name="village" type="text" placeholder="Enter village or locality" />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="pincode" style="color:black;">Pincode</label>
+          <input id="pincode" name="pincode" type="text" maxlength="6" placeholder="Enter 6 digit pincode" inputmode="numeric" />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="salesContact" style="color:black;">Sales Contact</label>
+          <input id="salesContact" name="salesContact" type="tel" maxlength="10" placeholder="Enter sales contact number (if available)" inputmode="tel" />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="referralCode" style="color:black;">Referral Code</label>
+          <input id="referralCode" name="referralCode" type="text" placeholder="Enter referral code if any" />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+        <div>
+          <label for="gstNumber" style="color:black;">GST Number</label>
+          <input id="gstNumber" name="gstNumber" type="text" maxlength="15" placeholder="Enter GST number (optional)" />
+          <small class="validation-message" aria-live="polite"></small>
+        </div>
+      </form>
+    </div>
+    <div class="footer-bar" role="button" tabindex="0" aria-label="Continue registration">
+      Continue
+    </div>
+  </div>
+
+<script>
+  (() => {
+    const form = document.getElementById('registrationForm');
+    const footerBar = document.querySelector('.footer-bar');
+
+    const stateSelect = document.getElementById('state');
+    const districtSelect = document.getElementById('district');
+    const pincodeInput = document.getElementById('pincode');
+
+    // For business categories multi-select
+    const multiSelectBtn = document.getElementById('businessCategoriesBtn');
+    const multiSelectMenu = document.getElementById('businessCategoriesMenu');
+    const confirmCategoriesBtn = document.getElementById('confirmCategoriesBtn');
+    const categoriesTip = document.getElementById('categoriesTip');
+
+    // Sample districts based on selected state
+    const districtsByState = {
+      maharashtra: ['Pune', 'Nagpur', 'Mumbai', 'Nashik'],
+      karnataka: ['Bengaluru', 'Mysuru', 'Hubli', 'Mangalore'],
+      tamilnadu: ['Chennai', 'Coimbatore', 'Madurai', 'Salem'],
+      gujarat: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot']
+    };
+
+    // Show/hide multi-select dropdown menu
+    multiSelectBtn.addEventListener('click', () => {
+      const shown = multiSelectMenu.classList.toggle('show');
+      multiSelectBtn.setAttribute('aria-expanded', shown);
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', e => {
+      if (!document.getElementById('businessCategoriesWrapper').contains(e.target)) {
+        multiSelectMenu.classList.remove('show');
+        multiSelectBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    confirmCategoriesBtn.addEventListener('click', () => {
+      const checkedBoxes = multiSelectMenu.querySelectorAll('input[type="checkbox"]:checked');
+      if (checkedBoxes.length === 0) {
+        categoriesTip.textContent = 'Please select at least one business category';
+      } else {
+        const selectedLabels = Array.from(checkedBoxes).map(cb => cb.parentElement.textContent.trim());
+        multiSelectBtn.textContent = selectedLabels.join(', ');
+        categoriesTip.textContent = '';
+        multiSelectMenu.classList.remove('show');
+        multiSelectBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Populate district select based on selected state
+    stateSelect.addEventListener('change', () => {
+      const selectedState = stateSelect.value;
+      districtSelect.innerHTML = '<option value="" disabled selected>Select district</option>';
+      if (selectedState && districtsByState[selectedState]) {
+        districtsByState[selectedState].forEach(district => {
+          const option = document.createElement('option');
+          option.value = district.toLowerCase();
+          option.textContent = district;
+          districtSelect.appendChild(option);
+        });
+        districtSelect.disabled = false;
+      } else {
+        districtSelect.disabled = true;
+      }
+    });
+
+    // Enforce digits only on pincode, max 6 chars
+    pincodeInput.addEventListener('input', () => {
+      pincodeInput.value = pincodeInput.value.replace(/\D/g, '').slice(0,6);
+    });
+
+    // Validation helper function
+    function validateField(field, message) {
+      const small = field.parentElement.querySelector('small.validation-message');
+      if (!field.checkValidity()) {
+        small.textContent = message;
+        return false;
+      } else {
+        small.textContent = '';
+        return true;
+      }
+    }
+
+    // Validate multi-select categories
+    function validateCategories() {
+      const checkedBoxes = multiSelectMenu.querySelectorAll('input[type="checkbox"]:checked');
+      if (checkedBoxes.length === 0) {
+        categoriesTip.textContent = 'Please select at least one business category';
+        return false;
+      }
+      categoriesTip.textContent = '';
+      return true;
+    }
+
+    // Overall form validation
+    function validateForm() {
+      form.querySelectorAll('small.validation-message').forEach(s => s.textContent = '');
+
+      const validations = [
+        () => validateField(form.name, 'Please enter your name'),
+        () => validateField(form.email, 'Please enter a valid email address'),
+        () => validateField(form.shopName, 'Please enter your shop name'),
+        () => validateField(form.shopAddress, 'Please enter your shop address'),
+        () => {
+          if (!form.businessType.value) {
+            form.businessType.parentElement.querySelector('small.validation-message').textContent = 'Please select business type';
+            return false;
+          }
+          return true;
+        },
+        () => validateCategories(),
+        () => true, // State optional
+        () => true, // District optional
+        () => true, // Taluka optional
+        () => true, // Village optional
+        () => {
+          if (form.pincode.value && form.pincode.value.length !== 6) {
+            form.pincode.parentElement.querySelector('small.validation-message').textContent = 'Pincode must be exactly 6 digits';
+            return false;
+          }
+          return true;
+        },
+        () => {
+          if (form.salesContact.value && !/^\d{10}$/.test(form.salesContact.value)) {
+            form.salesContact.parentElement.querySelector('small.validation-message').textContent = 'Sales contact must be 10 digits';
+            return false;
+          }
+          return true;
+        }
+      ];
+
+      for (let v of validations) {
+        if (!v()) {
+          // Focus first invalid field
+          const firstError = form.querySelector('small.validation-message:not(:empty)');
+          if (firstError) {
+            const inputOrSelect = firstError.previousElementSibling;
+            if (inputOrSelect) inputOrSelect.focus();
+          }
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // Make continue text clickable with keyboard support
+    const footerBar = document.querySelector('.footer-bar');
+    footerBar.addEventListener('click', () => {
+      if (validateForm()) {
+        alert('Registration successful!');
+        form.reset();
+        districtSelect.disabled = true;
+        categoriesTip.textContent = '';
+        multiSelectBtn.textContent = 'Select business categories';
+      }
+    });
+    footerBar.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        footerBar.click();
+      }
+    });
+
+    // Initially disable district select
+    districtSelect.disabled = true;
+  })();
+</script>
+</body>
+</html>
